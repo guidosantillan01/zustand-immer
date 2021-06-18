@@ -60,6 +60,8 @@ export default function App() {
       });
     });
 
+  console.log("comment");
+
   const removeFilter = () =>
     set((state) => {
       state.timeframeFilters.pop();
