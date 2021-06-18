@@ -1,10 +1,10 @@
 import React from "react";
 
 import Badge from "./Badge";
-import useFilterStore from "./store/useFilterStore";
+import useStore from "./store/useStore";
 
 function Filter() {
-  const timeframeFilters = useFilterStore((state) => state.timeframeFilters);
+  const timeframeFilters = useStore((state) => state.filters.timeframeFilters);
 
   return timeframeFilters.map((filter, idx) => (
     <Badge key={filter.id + idx}>{filter.value}</Badge>
@@ -12,11 +12,11 @@ function Filter() {
 }
 
 export default function App() {
-  const { set } = useFilterStore();
+  const set = useStore((state) => state.set);
 
   const handleClickImmer = () =>
     set((state) => {
-      state.timeframeFilters.push({
+      state.filters.timeframeFilters.push({
         id: "tf- 3",
         value: "2012 - 2013",
         filter: ["2012", "2013"]
@@ -25,7 +25,7 @@ export default function App() {
 
   const removeFilter = () =>
     set((state) => {
-      state.timeframeFilters.pop();
+      state.filters.timeframeFilters.pop();
     });
 
   return (
