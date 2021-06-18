@@ -2,7 +2,8 @@ import React from "react";
 import create from "zustand";
 import produce from "immer";
 
-const initialState = {
+const useFilterStore = create((set) => ({
+  set: (fn) => set(produce(fn)),
   timeframeFilters: [
     {
       id: "tf-1",
@@ -22,16 +23,6 @@ const initialState = {
       filter: "dwa"
     }
   ]
-};
-
-const useFilterStore = create((set) => ({
-  ...initialState,
-  addTimeframeFilter: (tf) =>
-    set((state) => ({
-      ...state,
-      timeframeFilters: [...state.timeframeFilters, tf]
-    })),
-  set: (fn) => set(produce(fn))
 }));
 
 const Badge = ({ children }) => {
@@ -51,7 +42,6 @@ const Badge = ({ children }) => {
 
 function Filter() {
   const timeframeFilters = useFilterStore((state) => state.timeframeFilters);
-  console.log({ timeframeFilters });
 
   return timeframeFilters.map((filter, idx) => (
     <Badge key={filter.id + idx}>{filter.value}</Badge>
@@ -59,28 +49,26 @@ function Filter() {
 }
 
 export default function App() {
-  const { set, addTimeframeFilter } = useFilterStore();
+  const { set } = useFilterStore();
 
   const handleClickImmer = () =>
     set((state) => {
       state.timeframeFilters.push({
-        id: "tf-3",
+        id: "tf- 3",
         value: "2012 - 2013",
         filter: ["2012", "2013"]
       });
     });
 
-  const handleClick = () =>
-    addTimeframeFilter({
-      id: "tf-3",
-      value: "2012 - 2013",
-      filter: ["2012", "2013"]
+  const removeFilter = () =>
+    set((state) => {
+      state.timeframeFilters.pop();
     });
 
   return (
     <div className="main">
-      <button onClick={handleClickImmer}>with immer</button>
-      <button onClick={handleClick}>Add more</button>
+      <button onClick={handleClickImmer}>push filter</button>
+      <button onClick={removeFilter}>pop filter</button>
       <div className="code">
         <div className="code-container">
           <Filter />
