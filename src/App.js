@@ -2,6 +2,8 @@ import React from "react";
 import create from "zustand";
 import produce from "immer";
 
+import Badge from "./Badge";
+
 const useFilterStore = create((set) => ({
   set: (fn) => set(produce(fn)),
   timeframeFilters: [
@@ -24,21 +26,6 @@ const useFilterStore = create((set) => ({
     }
   ]
 }));
-
-const Badge = ({ children }) => {
-  return (
-    <div
-      style={{
-        padding: "8px",
-        backgroundColor: "orangered",
-        display: "inline-flex",
-        marginRight: "16px"
-      }}
-    >
-      {children}
-    </div>
-  );
-};
 
 function Filter() {
   const timeframeFilters = useFilterStore((state) => state.timeframeFilters);
